@@ -1,0 +1,47 @@
+﻿@page "/Js"
+@using System.Timers;
+@inject IJSRuntime JS
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@implements IDisposable
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+
+    private int currentCount = 0;
+    private System.Timers.Timer timer;
+    protected async override Task OnInitializedAsync()
+    {
+        timer = new System.Timers.Timer(1000);
+        timer.Elapsed += OnTimedEvent;
+        timer.Start();
+        this.currentCount = await localStorage.GetItemAsync<int>("value");
+    }
+
+    private void OnTimedEvent(Object source, ElapsedEventArgs e)
+    {
+        currentCount++;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        this.timer.Stop();
+    }
+
+    private async void IncrementCount()  
+    {
+
+        currentCount++;
+
+        await localStorage.SetItemAsync("value", currentCount);
+
+        await JS.InvokeVoidAsync("console.log", new[] { currentCount });
+    }
+}
