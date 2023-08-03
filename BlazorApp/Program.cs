@@ -19,6 +19,7 @@ namespace BlazorApp
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddScoped<DataService, DataService>();
+            builder.Services.AddScoped<CounterService, CounterService>();
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 

@@ -1,0 +1,31 @@
+﻿@using System.Reactive.Subjects;
+@inject BlazorApp.Services.CounterService CounterService
+
+<h1>Counter with Shared State</h1>
+
+<p role="status">Current count: @CounterService.currentCount.Value</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+ 
+
+@code {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        CounterService.currentCount.Subscribe(async _ =>
+        {
+            await InvokeAsync(() =>
+            {
+                this.StateHasChanged();
+            });
+
+        });
+    }
+
+    private void IncrementCount()
+    {
+        CounterService.currentCount.OnNext(CounterService.currentCount.Value + 1);
+    }
+}
+
