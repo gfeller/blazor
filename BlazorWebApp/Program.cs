@@ -2,9 +2,10 @@ using BlazorWebApp;
 using BlazorWebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
- 
+
 builder.Services.AddRazorComponents()
-    .AddServerComponents();
+    .AddInteractiveServerComponents();
+
 
 builder.Services.AddScoped<DataService, DataService>();
 builder.Services.AddScoped<CounterService, CounterService>();
@@ -21,7 +22,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseAntiforgery();
 
-app.MapRazorComponents<App>();
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
 app.Run();

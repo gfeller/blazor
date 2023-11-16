@@ -1,7 +1,7 @@
 ﻿
 using System.Reactive.Subjects;
 
-namespace BlazorApp.Services
+namespace BlazorAppWebAssembly.Services
 {
     public class CounterService
     {
